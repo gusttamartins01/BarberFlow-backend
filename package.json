@@ -1,0 +1,7 @@
+{
+  "name": "barberflow-backend",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --env-files=.env src/server.ts"
+  }
+}
