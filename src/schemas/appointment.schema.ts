@@ -14,24 +14,38 @@ export const appointmentStatusSchema = z.enum([
 	'completed'
 ]);
 
-export const createAppointmentSchema = z
-	.object({
-		customerId: idSchema,
-		barberId: idSchema,
-		serviceId: idSchema,
-		date: dateSchema,
-		startTime: timeSchema,
-		endTime: timeSchema,
-		status: appointmentStatusSchema.default('pending'),
-		totalPrice: moneySchema,
-		notes: optionalTextSchema
-	})
-	.refine((appointment) => appointment.startTime < appointment.endTime, {
+const appointmentFieldsSchema = z.object({
+	customerId: idSchema,
+	barberId: idSchema,
+	serviceId: idSchema,
+	date: dateSchema,
+	startTime: timeSchema,
+	endTime: timeSchema,
+	status: appointmentStatusSchema.default('pending'),
+	totalPrice: moneySchema,
+	notes: optionalTextSchema
+});
+
+export const createAppointmentSchema = appointmentFieldsSchema.refine(
+	(appointment) => appointment.startTime < appointment.endTime,
+	{
 		message: 'O horario final deve ser posterior ao horario inicial',
 		path: ['endTime']
-	});
+	}
+);
 
-export const updateAppointmentSchema = createAppointmentSchema.partial();
+export const updateAppointmentSchema = appointmentFieldsSchema
+	.partial()
+	.refine(
+		(appointment) =>
+			!appointment.startTime ||
+			!appointment.endTime ||
+			appointment.startTime < appointment.endTime,
+		{
+			message: 'O horario final deve ser posterior ao horario inicial',
+			path: ['endTime']
+		}
+	);
 
 export type CreateAppointment = z.infer<typeof createAppointmentSchema>;
 export type UpdateAppointment = z.infer<typeof updateAppointmentSchema>;
