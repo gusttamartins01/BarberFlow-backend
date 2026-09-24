@@ -1,0 +1,14 @@
+services:
+  database:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: barberFlow
+    ports:
+      - "5433:5432"
+    volumes:
+      - barber-flow-data:/var/lib/postgresql/data
+
+volumes:
+  barber-flow-data:
