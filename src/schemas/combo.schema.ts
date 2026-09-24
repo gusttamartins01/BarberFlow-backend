@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { moneySchema, positiveIntegerSchema } from './shared.ts';
+import { moneySchema, positiveIntegerSchema } from './shared.schema.ts';
 
 export const createComboSchema = z.object({
 	name: z.string().trim().min(2).max(120),

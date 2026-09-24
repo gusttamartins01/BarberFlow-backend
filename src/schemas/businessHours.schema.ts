@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { timeSchema } from './shared.ts';
+import { timeSchema } from './shared.schema.ts';
 
 export const createBusinessHoursSchema = z
 	.object({

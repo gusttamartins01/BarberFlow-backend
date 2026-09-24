@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { phoneSchema } from './shared.ts';
+import { phoneSchema } from './shared.schema.ts';
 
 export const createCustomerSchema = z.object({
 	name: z.string().trim().min(2).max(120),

@@ -5,7 +5,7 @@ import {
 	moneySchema,
 	optionalTextSchema,
 	timeSchema
-} from './shared.ts';
+} from './shared.schema.ts';
 
 export const appointmentStatusSchema = z.enum([
 	'pending',
