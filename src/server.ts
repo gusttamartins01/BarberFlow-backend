@@ -9,15 +9,15 @@ app.use(pinoHttp({ logger }));
 
 app.use(express.json());
 
-app.use('/users', (_request, response) => {
+app.use('/customers', (_request, response) => {
 	response.status(200).json({
-		message: 'Olá, mundo! Jotape viadao'
+		message: 'Olá, mundo!'
 	});
 });
 
 app.use((_request, response) => {
 	response.status(404).json({
-		message: 'Page not found.'
+		message: 'Página não encontrada.'
 	});
 });
 
@@ -26,5 +26,5 @@ app.use(errorHandler);
 const PORT = Number(process.env.PORT);
 
 app.listen(PORT, () => {
-	console.log(`Server running on port: http://localhost:${PORT}`);
+	console.log(`Servidor rodando na porta: http://localhost:${PORT}`);
 });
