@@ -7,12 +7,10 @@ import {
 	timeSchema
 } from './shared.schema.ts';
 
-export const appointmentStatusSchema = z.enum([
-	'pending',
-	'confirmed',
-	'cancelled',
-	'completed'
-]);
+export const appointmentStatusSchema = z.enum(
+	['pending', 'confirmed', 'cancelled', 'completed'],
+	'Entrada inválida: status deve ser pending, confirmed, cancelled ou completed.'
+);
 
 const appointmentFieldsSchema = z.object({
 	customerId: idSchema,
