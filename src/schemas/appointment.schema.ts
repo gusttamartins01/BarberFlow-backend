@@ -33,5 +33,5 @@ export const createAppointmentSchema = z
 
 export const updateAppointmentSchema = createAppointmentSchema.partial();
 
-export type CreateAppointmentInput = z.infer<typeof createAppointmentSchema>;
-export type UpdateAppointmentInput = z.infer<typeof updateAppointmentSchema>;
+export type CreateAppointment = z.infer<typeof createAppointmentSchema>;
+export type UpdateAppointment = z.infer<typeof updateAppointmentSchema>;

@@ -10,5 +10,5 @@ export const createComboSchema = z.object({
 
 export const updateComboSchema = createComboSchema.partial();
 
-export type CreateComboInput = z.infer<typeof createComboSchema>;
-export type UpdateComboInput = z.infer<typeof updateComboSchema>;
+export type CreateCombo = z.infer<typeof createComboSchema>;
+export type UpdateCombo = z.infer<typeof updateComboSchema>;

@@ -6,5 +6,5 @@ export const createBarberSchema = z.object({
 
 export const updateBarberSchema = createBarberSchema.partial();
 
-export type CreateBarberInput = z.infer<typeof createBarberSchema>;
-export type UpdateBarberInput = z.infer<typeof updateBarberSchema>;
+export type CreateBarber = z.infer<typeof createBarberSchema>;
+export type UpdateBarber = z.infer<typeof updateBarberSchema>;

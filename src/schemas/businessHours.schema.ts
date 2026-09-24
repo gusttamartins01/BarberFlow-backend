@@ -15,9 +15,5 @@ export const createBusinessHoursSchema = z
 
 export const updateBusinessHoursSchema = createBusinessHoursSchema.partial();
 
-export type CreateBusinessHoursInput = z.infer<
-	typeof createBusinessHoursSchema
->;
-export type UpdateBusinessHoursInput = z.infer<
-	typeof updateBusinessHoursSchema
->;
+export type CreateBusinessHours = z.infer<typeof createBusinessHoursSchema>;
+export type UpdateBusinessHours = z.infer<typeof updateBusinessHoursSchema>;
