@@ -1,10 +1,112 @@
+datasource db {
+  provider = "postgresql"
+}
+
 generator client {
   provider = "prisma-client"
   output   = "./generated"
 }
 
-datasource db {
-  provider = "postgresql"
+enum AppointmentStatus {
+  pending
+  confirmed
+  cancelled
+  completed
 }
 
+model Customer {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(120)
+  phone     String   @unique @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
+  appointments Appointment[]
+
+  @@map("customers")
+}
+
+model Barber {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(120)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  appointments Appointment[]
+
+  @@map("barbers")
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(120)
+  description String?  @db.VarChar(500)
+  price       Decimal  @db.Decimal(10, 2)
+  duration    Int
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  appointments  Appointment[]
+  comboServices ComboService[]
+
+  @@map("services")
+}
+
+model Combo {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(120)
+  description String   @db.VarChar(500)
+  price       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  comboServices ComboService[]
+
+  @@map("combos")
+}
+
+model ComboService {
+  comboId   Int @map("combo_id")
+  serviceId Int @map("service_id")
+
+  combo   Combo   @relation(fields: [comboId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@id([comboId, serviceId])
+  @@map("combo_services")
+}
+
+model Appointment {
+  id         Int               @id @default(autoincrement())
+  customerId Int               @map("customer_id")
+  barberId   Int               @map("barber_id")
+  serviceId  Int               @map("service_id")
+  date       DateTime          @db.Date
+  startTime  String            @map("start_time") @db.VarChar(5)
+  endTime    String            @map("end_time") @db.VarChar(5)
+  status     AppointmentStatus @default(pending)
+  totalPrice Decimal           @map("total_price") @db.Decimal(10, 2)
+  notes      String?           @db.VarChar(500)
+  createdAt  DateTime          @default(now()) @map("created_at")
+  updatedAt  DateTime          @updatedAt @map("updated_at")
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  barber   Barber   @relation(fields: [barberId], references: [id], onDelete: Restrict)
+  service  Service  @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@index([date, barberId])
+  @@index([date, customerId])
+  @@map("appointments")
+}
+
+model BusinessHours {
+  id        Int      @id @default(autoincrement())
+  dayOfWeek Int      @unique @map("day_of_week")
+  openTime  String   @map("open_time") @db.VarChar(5)
+  closeTime String   @map("close_time") @db.VarChar(5)
+  isOpen    Boolean  @default(true) @map("is_open")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("business_hours")
+}
