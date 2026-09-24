@@ -5,6 +5,8 @@ export type ValidationFieldError = {
 	message: string;
 };
 
+export type Page = { page: number };
+
 export type Customer = {
 	id: number;
 	name: string;
