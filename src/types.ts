@@ -1,3 +1,5 @@
+import type { Decimal } from '@prisma/client/runtime/client';
+
 export type ValidationFieldError = {
 	field: string;
 	message: string;
@@ -7,36 +9,35 @@ export type Customer = {
 	id: number;
 	name: string;
 	phone: string;
-	email?: string;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type Barber = {
 	id: number;
 	name: string;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type Service = {
 	id: number;
 	name: string;
-	description?: string;
-	price: number;
+	description?: string | null;
+	price: Decimal;
 	duration: number;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type Combo = {
 	id: number;
 	name: string;
 	description: string;
-	price: number;
+	price: Decimal;
 	services: Service[];
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type AppointmentStatus =
@@ -50,14 +51,14 @@ export type Appointment = {
 	customerId: number;
 	barberId: number;
 	serviceId: number;
-	date: string;
+	date: Date;
 	startTime: string;
 	endTime: string;
 	status: AppointmentStatus;
-	totalPrice: number;
-	notes?: string;
-	createdAt: string;
-	updatedAt: string;
+	totalPrice: Decimal;
+	notes?: string | null;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 export type BusinessHours = {
@@ -66,6 +67,6 @@ export type BusinessHours = {
 	openTime: string;
 	closeTime: string;
 	isOpen: boolean;
-	createdAt: string;
-	updatedAt: string;
+	createdAt: Date;
+	updatedAt: Date;
 };

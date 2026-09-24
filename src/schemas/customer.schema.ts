@@ -3,8 +3,7 @@ import { phoneSchema } from './shared.schema.ts';
 
 export const createCustomerSchema = z.object({
 	name: z.string().trim().min(2).max(120),
-	phone: phoneSchema,
-	email: z.email().optional()
+	phone: phoneSchema
 });
 
 export const updateCustomerSchema = createCustomerSchema.partial();
