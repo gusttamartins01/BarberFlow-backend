@@ -29,7 +29,7 @@ export async function insertCustomer(data: CreateCustomer): Promise<Customer> {
 	});
 }
 
-export async function modifycustomer(
+export async function modifyCustomer(
 	id: number,
 	data: UpdateCustomer
 ): Promise<Customer> {
