@@ -5,44 +5,56 @@ import type {
 } from '../schemas/appointment.schema.ts';
 import * as AppointmentService from '../services/appointment.service.ts';
 
-export function getAllAppointments(
+export async function getAllAppointments(
 	_request: Request,
 	response: Response
-): void {
-	const appointments = AppointmentService.findAllAppointments();
+): Promise<void> {
+	const appointments = await AppointmentService.findAllAppointments();
 
 	response.status(200).json(appointments);
 }
 
-export function getAppointmentById(request: Request, response: Response): void {
+export async function getAppointmentById(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = Number(request.params.id);
 
-	const appointment = AppointmentService.findAppointmentById(id);
+	const appointment = await AppointmentService.findAppointmentById(id);
 
 	response.status(200).json(appointment);
 }
 
-export function createAppointment(request: Request, response: Response): void {
+export async function createAppointment(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const body = request.body as CreateAppointment;
 
-	const appointment = AppointmentService.insertAppointment(body);
+	const appointment = await AppointmentService.insertAppointment(body);
 
 	response.status(201).json(appointment);
 }
 
-export function updateAppointment(request: Request, response: Response): void {
+export async function updateAppointment(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = Number(request.params.id);
 	const body = request.body as UpdateAppointment;
 
-	const appointment = AppointmentService.modifyAppointment(id, body);
+	const appointment = await AppointmentService.modifyAppointment(id, body);
 
 	response.status(200).json(appointment);
 }
 
-export function deleteAppointment(request: Request, response: Response): void {
+export async function deleteAppointment(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = Number(request.params.id);
 
-	AppointmentService.removeAppointment(id);
+	await AppointmentService.removeAppointment(id);
 
 	response.status(204).send();
 }
