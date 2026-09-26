@@ -1,4 +1,4 @@
-import { NotFoundError } from '../errors/index.ts';
+import { NotFoundError, ValidationError } from '../errors/index.ts';
 import prisma from '../lib/prisma.ts';
 import type {
 	CreateAppointment,
@@ -20,6 +20,18 @@ function prepareUpdateData(data: UpdateAppointment) {
 	};
 }
 
+async function findServicePrice(serviceId: number) {
+	const service = await prisma.service.findUnique({
+		where: { id: serviceId },
+		select: { price: true }
+	});
+
+	if (!service)
+		throw new NotFoundError(`Serviço com ID ${serviceId} não encontrado.`);
+
+	return service.price;
+}
+
 export async function findAllAppointments(): Promise<Appointment[]> {
 	return await prisma.appointment.findMany();
 }
@@ -38,8 +50,13 @@ export async function findAppointmentById(id: number): Promise<Appointment> {
 export async function insertAppointment(
 	data: CreateAppointment
 ): Promise<Appointment> {
+	const totalPrice = await findServicePrice(data.serviceId);
+
 	return await prisma.appointment.create({
-		data: prepareCreateData(data)
+		data: {
+			...prepareCreateData(data),
+			totalPrice
+		}
 	});
 }
 
@@ -47,11 +64,30 @@ export async function modifyAppointment(
 	id: number,
 	data: UpdateAppointment
 ): Promise<Appointment> {
-	await findAppointmentById(id);
+	const appointment = await findAppointmentById(id);
+	const startTime = data.startTime ?? appointment.startTime;
+	const endTime = data.endTime ?? appointment.endTime;
+
+	if (startTime >= endTime) {
+		throw new ValidationError('Dados inválidos', [
+			{
+				field: 'endTime',
+				message: 'O horário final deve ser posterior ao horário inicial.'
+			}
+		]);
+	}
+
+	const totalPrice =
+		data.serviceId === undefined
+			? appointment.totalPrice
+			: await findServicePrice(data.serviceId);
 
 	return await prisma.appointment.update({
 		where: { id },
-		data: prepareUpdateData(data)
+		data: {
+			...prepareUpdateData(data),
+			totalPrice
+		}
 	});
 }
 

@@ -1,4 +1,4 @@
-import { NotFoundError } from '../errors/index.ts';
+import { NotFoundError, ValidationError } from '../errors/index.ts';
 import prisma from '../lib/prisma.ts';
 import type {
 	CreateBusinessHours,
@@ -35,7 +35,19 @@ export async function modifyBusinessHours(
 	id: number,
 	data: UpdateBusinessHours
 ): Promise<BusinessHours> {
-	await findBusinessHoursById(id);
+	const currentHours = await findBusinessHoursById(id);
+	const isOpen = data.isOpen ?? currentHours.isOpen;
+	const openTime = data.openTime ?? currentHours.openTime;
+	const closeTime = data.closeTime ?? currentHours.closeTime;
+
+	if (isOpen && openTime >= closeTime) {
+		throw new ValidationError('Dados inválidos', [
+			{
+				field: 'closeTime',
+				message: 'O horário final deve ser posterior ao horário inicial.'
+			}
+		]);
+	}
 
 	return await prisma.businessHours.update({
 		where: { id },
