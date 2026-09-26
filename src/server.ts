@@ -33,5 +33,5 @@ app.use(errorHandler);
 const PORT = Number(process.env.PORT);
 
 app.listen(PORT, () => {
-	logger.info(`Servidor rodando na porta: http://localhost${PORT}`);
+	logger.info(`Servidor rodando na porta: http://localhost:${PORT}`);
 });
