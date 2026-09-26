@@ -2,41 +2,56 @@ import type { Request, Response } from 'express';
 import type { CreateCombo, UpdateCombo } from '../schemas/combo.schema.ts';
 import * as ComboService from '../services/combo.service.ts';
 
-export function getAllCombos(_request: Request, response: Response): void {
-	const combos = ComboService.findAllCombos();
+export async function getAllCombos(
+	_request: Request,
+	response: Response
+): Promise<void> {
+	const combos = await ComboService.findAllCombos();
 
 	response.status(200).json(combos);
 }
 
-export function getComboById(request: Request, response: Response): void {
+export async function getComboById(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 
-	const combo = ComboService.findComboById(id);
+	const combo = await ComboService.findComboById(id);
 
 	response.status(200).json(combo);
 }
 
-export function createCombo(request: Request, response: Response): void {
+export async function createCombo(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const body = request.body as CreateCombo;
 
-	const combo = ComboService.insertCombo(body);
+	const combo = await ComboService.insertCombo(body);
 
 	response.status(201).json(combo);
 }
 
-export function updateCombo(request: Request, response: Response): void {
+export async function updateCombo(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 	const body = request.body as UpdateCombo;
 
-	const combo = ComboService.modifyCombo(id, body);
+	const combo = await ComboService.modifyCombo(id, body);
 
 	response.status(200).json(combo);
 }
 
-export function deleteCombo(request: Request, response: Response): void {
+export async function deleteCombo(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 
-	ComboService.removeCombo(id);
+	await ComboService.removeCombo(id);
 
 	response.status(204).send();
 }

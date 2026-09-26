@@ -2,41 +2,56 @@ import type { Request, Response } from 'express';
 import type { CreateBarber, UpdateBarber } from '../schemas/barber.schema.ts';
 import * as BarberService from '../services/barber.service.ts';
 
-export function getAllBarbers(_request: Request, response: Response): void {
-	const barbers = BarberService.findAllBarbers();
+export async function getAllBarbers(
+	_request: Request,
+	response: Response
+): Promise<void> {
+	const barbers = await BarberService.findAllBarbers();
 
 	response.status(200).json(barbers);
 }
 
-export function getBarberById(request: Request, response: Response): void {
+export async function getBarberById(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 
-	const barber = BarberService.findBarberById(id);
+	const barber = await BarberService.findBarberById(id);
 
 	response.status(200).json(barber);
 }
 
-export function createBarber(request: Request, response: Response): void {
+export async function createBarber(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const body = request.body as CreateBarber;
 
-	const barber = BarberService.insertBarber(body);
+	const barber = await BarberService.insertBarber(body);
 
 	response.status(201).json(barber);
 }
 
-export function updateBarber(request: Request, response: Response): void {
+export async function updateBarber(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 	const body = request.body as UpdateBarber;
 
-	const barber = BarberService.modifyBarber(id, body);
+	const barber = await BarberService.modifyBarber(id, body);
 
 	response.status(200).json(barber);
 }
 
-export function deleteBarber(request: Request, response: Response): void {
+export async function deleteBarber(
+	request: Request,
+	response: Response
+): Promise<void> {
 	const id = +request.params.id;
 
-	BarberService.removeBarber(id);
+	await BarberService.removeBarber(id);
 
 	response.status(204).send();
 }

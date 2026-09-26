@@ -5,56 +5,56 @@ import type {
 } from '../schemas/businessHours.schema.ts';
 import * as BusinessHoursService from '../services/businessHours.service.ts';
 
-export function getAllBusinessHours(
+export async function getAllBusinessHours(
 	_request: Request,
 	response: Response
-): void {
-	const businessHours = BusinessHoursService.findAllBusinessHours();
+): Promise<void> {
+	const businessHours = await BusinessHoursService.findAllBusinessHours();
 
 	response.status(200).json(businessHours);
 }
 
-export function getBusinessHoursById(
+export async function getBusinessHoursById(
 	request: Request,
 	response: Response
-): void {
+): Promise<void> {
 	const id = +request.params.id;
 
-	const businessHour = BusinessHoursService.findBusinessHoursById(id);
+	const businessHour = await BusinessHoursService.findBusinessHoursById(id);
 
 	response.status(200).json(businessHour);
 }
 
-export function createBusinessHours(
+export async function createBusinessHours(
 	request: Request,
 	response: Response
-): void {
+): Promise<void> {
 	const body = request.body as CreateBusinessHours;
 
-	const businessHour = BusinessHoursService.insertBusinessHours(body);
+	const businessHour = await BusinessHoursService.insertBusinessHours(body);
 
 	response.status(201).json(businessHour);
 }
 
-export function updateBusinessHours(
+export async function updateBusinessHours(
 	request: Request,
 	response: Response
-): void {
+): Promise<void> {
 	const id = +request.params.id;
 	const body = request.body as UpdateBusinessHours;
 
-	const businessHour = BusinessHoursService.modifyBusinessHours(id, body);
+	const businessHour = await BusinessHoursService.modifyBusinessHours(id, body);
 
 	response.status(200).json(businessHour);
 }
 
-export function deleteBusinessHours(
+export async function deleteBusinessHours(
 	request: Request,
 	response: Response
-): void {
+): Promise<void> {
 	const id = +request.params.id;
 
-	BusinessHoursService.removeBusinessHours(id);
+	await BusinessHoursService.removeBusinessHours(id);
 
 	response.status(204).send();
 }
