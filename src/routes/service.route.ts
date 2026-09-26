@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import * as ServiceController from '../controllers/service.controller.ts';
-import validate from '../middlewares/validate.ts';
+import validate, { validateId } from '../middlewares/validate.ts';
 import {
 	createServiceSchema,
 	updateServiceSchema
 } from '../schemas/service.schema.ts';
 
 const router = Router();
+router.param('id', validateId);
 
 router.get('/', ServiceController.getAllServices);
 router.get('/:id', ServiceController.getServiceById);

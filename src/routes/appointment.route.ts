@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import * as AppointmentController from '../controllers/appointment.controller.ts';
-import validate from '../middlewares/validate.ts';
+import validate, { validateId } from '../middlewares/validate.ts';
 import {
 	createAppointmentSchema,
 	updateAppointmentSchema
 } from '../schemas/appointment.schema.ts';
 
 const router = Router();
+router.param('id', validateId);
 
 router.get('/', AppointmentController.getAllAppointments);
 router.get('/:id', AppointmentController.getAppointmentById);
