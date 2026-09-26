@@ -2,6 +2,7 @@ import express from 'express';
 import { pinoHttp } from 'pino-http';
 import logger from './lib/logger.ts';
 import errorHandler from './middlewares/errorhandler.ts';
+import notFoundHandler from './middlewares/notFoundHandler.ts';
 import AppointmentRouter from './routes/appointment.route.ts';
 import BarberRouter from './routes/barber.route.ts';
 import BusinessHours from './routes/businessHours.route.ts';
@@ -22,11 +23,7 @@ app.use('/combos', ComboRouter);
 app.use('/customers', CustomerRouter);
 app.use('/services', ServiceRouter);
 
-app.use((_request, response) => {
-	response.status(404).json({
-		message: 'Página não encontrada.'
-	});
-});
+app.use(notFoundHandler);
 
 app.use(errorHandler);
 
