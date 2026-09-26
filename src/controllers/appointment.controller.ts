@@ -18,7 +18,7 @@ export async function getAppointmentById(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	const id = Number(request.params.id);
+	const id = +request.params.id;
 
 	const appointment = await AppointmentService.findAppointmentById(id);
 
@@ -40,7 +40,7 @@ export async function updateAppointment(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	const id = Number(request.params.id);
+	const id = +request.params.id;
 	const body = request.body as UpdateAppointment;
 
 	const appointment = await AppointmentService.modifyAppointment(id, body);
@@ -52,7 +52,7 @@ export async function deleteAppointment(
 	request: Request,
 	response: Response
 ): Promise<void> {
-	const id = Number(request.params.id);
+	const id = +request.params.id;
 
 	await AppointmentService.removeAppointment(id);
 
