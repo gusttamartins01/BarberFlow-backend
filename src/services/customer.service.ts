@@ -7,9 +7,7 @@ import type {
 import type { Customer } from '../types.ts';
 
 export async function findAllCustomers(): Promise<Customer[]> {
-	const customers = await prisma.customer.findMany();
-
-	return customers;
+	return await prisma.customer.findMany();
 }
 
 export async function findCustomerById(id: number): Promise<Customer> {

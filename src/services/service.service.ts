@@ -7,9 +7,7 @@ import type {
 import type { Service } from '../types.ts';
 
 export async function findAllServices(): Promise<Service[]> {
-	const Services = await prisma.service.findMany();
-
-	return Services;
+	return await prisma.service.findMany();
 }
 
 export async function findServiceById(id: number): Promise<Service> {

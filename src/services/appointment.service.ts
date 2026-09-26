@@ -21,9 +21,7 @@ function prepareUpdateData(data: UpdateAppointment) {
 }
 
 export async function findAllAppointments(): Promise<Appointment[]> {
-	const appointments = await prisma.appointment.findMany();
-
-	return appointments;
+	return await prisma.appointment.findMany();
 }
 
 export async function findAppointmentById(id: number): Promise<Appointment> {
