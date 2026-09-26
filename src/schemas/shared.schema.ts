@@ -17,7 +17,31 @@ export const moneySchema = z
 
 export const dateSchema = z
 	.string('Entrada inválida: esperava-se uma data em texto.')
-	.regex(/^\d{4}-\d{2}-\d{2}$/, 'Use a data no formato AAAA-MM-DD');
+	.regex(/^\d{4}-\d{2}-\d{2}$/, 'Use a data no formato AAAA-MM-DD')
+	.refine(
+		(value) => {
+			const [year, month, day] = value.split('-').map(Number);
+			const isLeapYear =
+				year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+			const daysInMonth = [
+				31,
+				isLeapYear ? 29 : 28,
+				31,
+				30,
+				31,
+				30,
+				31,
+				31,
+				30,
+				31,
+				30,
+				31
+			][month - 1];
+
+			return year > 0 && day > 0 && day <= (daysInMonth ?? 0);
+		},
+		{ message: 'Informe uma data válida.' }
+	);
 
 export const timeSchema = z
 	.string('Entrada inválida: esperava-se um horário em texto.')

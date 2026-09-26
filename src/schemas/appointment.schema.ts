@@ -2,7 +2,6 @@ import { z } from 'zod';
 import {
 	dateSchema,
 	idSchema,
-	moneySchema,
 	optionalTextSchema,
 	timeSchema
 } from './shared.schema.ts';
@@ -20,7 +19,6 @@ const appointmentFieldsSchema = z.object({
 	startTime: timeSchema,
 	endTime: timeSchema,
 	status: appointmentStatusSchema.default('pending'),
-	totalPrice: moneySchema,
 	notes: optionalTextSchema
 });
 
